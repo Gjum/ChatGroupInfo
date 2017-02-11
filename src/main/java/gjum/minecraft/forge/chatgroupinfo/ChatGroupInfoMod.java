@@ -21,7 +21,7 @@ public class ChatGroupInfoMod
 {
     public static final String MODID = "chatgroupinfo";
     public static final String MODNAME = "Chat Group Info";
-    public static final String MODVERSION = "0.1.1";
+    public static final String MODVERSION = "0.1.2";
 
     private static final Pattern chatGroupPattern = Pattern.compile("You are now chatting in group (\\w*)\\.");
     private static final Pattern privateMessagePattern = Pattern.compile("You are now chatting with (\\w*)\\.");
@@ -55,7 +55,11 @@ public class ChatGroupInfoMod
             activeGroupChat = null;
         } else if ("You left private chat.".equals(chatMsg)) {
             activePrivateChat = null;
+        } else if ("You aren't in private chat.".equals(chatMsg)) {
+            activePrivateChat = null;
         } else if ((matcher = chatGroupPattern.matcher(chatMsg)).matches()) {
+            if (activeGroupChat == null)
+                activePrivateChat = null; // changing from global to a group chat leaves private chat
             activeGroupChat = String.format("[%s]", matcher.group(1));
         } else if ((matcher = privateMessagePattern.matcher(chatMsg)).matches()) {
             activePrivateChat = String.format("<%s>", matcher.group(1));
