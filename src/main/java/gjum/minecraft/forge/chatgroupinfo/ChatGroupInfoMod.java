@@ -11,9 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static net.minecraft.client.gui.AccessHelper.getInputField;
 
 @net.minecraftforge.fml.common.Mod(modid = ChatGroupInfoMod.MODID, name = ChatGroupInfoMod.MODNAME, version = ChatGroupInfoMod.MODVERSION, guiFactory = "com.gmail.nuclearcat1337.snitch_master.gui.ConfigGuiFactory")
 public class ChatGroupInfoMod
@@ -68,18 +69,7 @@ public class ChatGroupInfoMod
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.currentScreen instanceof GuiChat)) return;
 
-        GuiTextField inputField;
-        GuiChat chatGui = (GuiChat) mc.currentScreen;
-        try {
-            Field inputFieldField = chatGui.getClass().getDeclaredField("inputField");
-            inputFieldField.setAccessible(true);
-            inputField = (GuiTextField) inputFieldField.get(chatGui);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            disable();
-            return;
-        }
-
+        GuiTextField inputField = getInputField((GuiChat) mc.currentScreen);
         if (!inputField.getText().isEmpty()) return;
 
         float x = inputField.xPosition + 2 * mc.fontRendererObj.getCharWidth('_');
