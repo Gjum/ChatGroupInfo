@@ -57,6 +57,8 @@ public class ChatGroupInfoMod
             activePrivateChat = null;
         } else if ("You aren't in private chat.".equals(chatMsg)) {
             activePrivateChat = null;
+        } else if ("The player you were chatting with has gone offline, you have been moved to regular chat".equals(chatMsg)) {
+            activePrivateChat = null;
         } else if ((matcher = chatGroupPattern.matcher(chatMsg)).matches()) {
             if (activeGroupChat == null)
                 activePrivateChat = null; // changing from global to a group chat leaves private chat
