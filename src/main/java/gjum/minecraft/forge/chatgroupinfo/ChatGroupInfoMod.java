@@ -33,19 +33,18 @@ public class ChatGroupInfoMod
     @net.minecraftforge.fml.common.Mod.Instance(MODID)
     public static ChatGroupInfoMod instance;
 
-    private String activeChatGroup;
+    private String activeGroupChat;
+    private String activePrivateChat;
     private boolean enabled = true;
 
     @net.minecraftforge.fml.common.Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        activeChatGroup = null;
+        activeGroupChat = null;
+        activePrivateChat = null;
         enabled = true;
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
-    private void disable() {
-        enabled = false;
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
@@ -53,18 +52,19 @@ public class ChatGroupInfoMod
         String chatMsg = event.getMessage().getUnformattedText();
         Matcher matcher;
         if ("You are now in global chat.".equals(chatMsg)) {
-            activeChatGroup = "(global)";
+            activeGroupChat = null;
+        } else if ("You left private chat.".equals(chatMsg)) {
+            activePrivateChat = null;
         } else if ((matcher = chatGroupPattern.matcher(chatMsg)).matches()) {
-            activeChatGroup = String.format("[%s]", matcher.group(1));
+            activeGroupChat = String.format("[%s]", matcher.group(1));
         } else if ((matcher = privateMessagePattern.matcher(chatMsg)).matches()) {
-            activeChatGroup = String.format("<%s>", matcher.group(1));
+            activePrivateChat = String.format("<%s>", matcher.group(1));
         }
     }
 
     @SubscribeEvent
     public void onDrawScreen(GuiScreenEvent.DrawScreenEvent event) {
         if (!enabled) return;
-        if (null == activeChatGroup) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.currentScreen instanceof GuiChat)) return;
@@ -74,7 +74,13 @@ public class ChatGroupInfoMod
 
         float x = inputField.xPosition + 2 * mc.fontRendererObj.getCharWidth('_');
         float y = inputField.yPosition;
-        String text = "[" + activeChatGroup + "]";
+
+        String text = "(global)";
+        if (activeGroupChat != null)
+            text = activeGroupChat;
+        if (activePrivateChat != null)
+            text = activePrivateChat;
+
         mc.fontRendererObj.drawStringWithShadow(text, x, y, color);
     }
 }
