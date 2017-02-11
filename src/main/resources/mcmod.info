@@ -3,7 +3,7 @@
   "modid": "chatgroupinfo",
   "name": "Chat Group Info",
   "description": "Show current chat group (NameLayer plugin) when chat input field is empty",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "mcversion": "1.10.2",
   "url": "https://github.com/Gjum/ChatGroupInfo",
   "updateUrl": "",

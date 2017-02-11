@@ -20,7 +20,7 @@ public class ChatGroupInfoMod
 {
     public static final String MODID = "chatgroupinfo";
     public static final String MODNAME = "Chat Group Info";
-    public static final String MODVERSION = "0.1.0";
+    public static final String MODVERSION = "0.1.1";
 
     private static final Pattern chatGroupPattern = Pattern.compile("You are now chatting in group (\\w*)\\.");
     private static final Pattern privateMessagePattern = Pattern.compile("You are now chatting with (\\w*)\\.");
