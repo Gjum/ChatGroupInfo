@@ -35,6 +35,7 @@ public class ChatGroupInfoMod
 
     private String activeGroupChat;
     private String activePrivateChat;
+    private boolean initialized = false;
     private boolean enabled = true;
 
     @net.minecraftforge.fml.common.Mod.EventHandler
@@ -51,6 +52,7 @@ public class ChatGroupInfoMod
     public void onChat(ClientChatReceivedEvent event) {
         String chatMsg = event.getMessage().getUnformattedText();
         Matcher matcher;
+        boolean foundMatch = true; // gets set to false if no match
         if ("You are now in global chat.".equals(chatMsg)) {
             activeGroupChat = null;
         } else if ("You left private chat.".equals(chatMsg)) {
@@ -65,12 +67,16 @@ public class ChatGroupInfoMod
             activeGroupChat = String.format("[%s]", matcher.group(1));
         } else if ((matcher = privateMessagePattern.matcher(chatMsg)).matches()) {
             activePrivateChat = String.format("<%s>", matcher.group(1));
+        } else {
+            foundMatch = false;
         }
+
+        if (foundMatch) initialized = true;
     }
 
     @SubscribeEvent
     public void onDrawScreen(GuiScreenEvent.DrawScreenEvent event) {
-        if (!enabled) return;
+        if (!enabled || !initialized) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.currentScreen instanceof GuiChat)) return;
