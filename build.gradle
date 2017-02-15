@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.10.2-0.1.2"
+version = "1.10.2-0.1.3"
 group= "gjum.minecraft.forge.chatgroupinfo" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ChatGroupInfo"
 
