@@ -21,10 +21,10 @@ public class ChatGroupInfoMod
 {
     public static final String MODID = "chatgroupinfo";
     public static final String MODNAME = "Chat Group Info";
-    public static final String MODVERSION = "0.1.3";
+    public static final String MODVERSION = "0.1.4";
 
-    private static final Pattern chatGroupPattern = Pattern.compile("You are now chatting in group (\\w*)\\.");
-    private static final Pattern privateMessagePattern = Pattern.compile("You are now chatting with (\\w*)\\.");
+    private static final Pattern chatGroupPattern = Pattern.compile("You are now chatting in group ([^ ]*)\\.");
+    private static final Pattern privateMessagePattern = Pattern.compile("You are now chatting with ([^ ]*)\\.");
 
     public static final Logger logger = LogManager.getLogger(MODID);
 
