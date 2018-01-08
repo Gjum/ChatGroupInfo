@@ -3,6 +3,7 @@ package gjum.minecraft.forge.chatgroupinfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,7 +51,7 @@ public class ChatGroupInfoMod
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        String chatMsg = event.getMessage().getUnformattedText();
+        String chatMsg = TextFormatting.getTextWithoutFormattingCodes(event.getMessage().getUnformattedText());
         Matcher matcher;
         boolean foundMatch = true; // gets set to false if no match
         if ("You are now in global chat.".equals(chatMsg)) {
@@ -84,8 +85,8 @@ public class ChatGroupInfoMod
         GuiTextField inputField = getInputField((GuiChat) mc.currentScreen);
         if (!inputField.getText().isEmpty()) return;
 
-        float x = inputField.xPosition + 2 * mc.fontRendererObj.getCharWidth('_');
-        float y = inputField.yPosition;
+        float x = inputField.x + 2 * mc.fontRenderer.getCharWidth('_');
+        float y = inputField.y;
 
         String text = "(global)";
         if (activeGroupChat != null)
@@ -93,6 +94,6 @@ public class ChatGroupInfoMod
         if (activePrivateChat != null)
             text = activePrivateChat;
 
-        mc.fontRendererObj.drawStringWithShadow(text, x, y, color);
+        mc.fontRenderer.drawStringWithShadow(text, x, y, color);
     }
 }
